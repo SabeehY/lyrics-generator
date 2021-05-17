@@ -1,0 +1,7 @@
+Top 50 artists, new_model = True
+Training new model w/ 2-layer, 128-cell LSTMs
+Training on 11,483,917 character sequences.
+Epoch, train_loss, val_loss
+1, 1.4128, 1.5087
+2, 1.3300, 1.9604
+3, 1.6319, 1.4530

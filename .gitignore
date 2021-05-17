@@ -1,0 +1,4 @@
+report.doc*
+.idea/*
+.ipynb_checkpoints/*
+.vscode/*

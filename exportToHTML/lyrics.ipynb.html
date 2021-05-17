@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>lyrics.ipynb</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #59626f; font-style: italic;}
+.s1 { color: #abb2bf;}
+.s2 { color: #c679dd; font-style: italic;}
+.s3 { color: #61afef;}
+.s4 { color: #a6b2c0;}
+.s5 { color: #98c379;}
+.s6 { color: #d19a66;}
+.ls0 { height: 1px; border-width: 0; color: #2e3c43; background-color:#2e3c43}
+</style>
+</head>
+<body bgcolor="#282c34">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+lyrics.ipynb</font>
+</center></td></tr></table>
+<pre><span class="s0">#%% 
+</span>
+<span class="s2">import </span><span class="s1">pandas </span><span class="s2">as </span><span class="s1">pd</span>
+<hr class="ls0"><span class="s0">#%% 
+</span>
+<span class="s1">df </span><span class="s3">= </span><span class="s1">pd</span><span class="s4">.</span><span class="s1">read_excel</span><span class="s4">(</span><span class="s5">'dataset.xlsx'</span><span class="s4">)</span>
+<hr class="ls0"><span class="s0">#%% 
+</span>
+<span class="s1">df</span><span class="s4">.</span><span class="s1">head</span><span class="s4">()</span>
+<hr class="ls0"><span class="s0">#%% 
+</span>
+<span class="s1">lc </span><span class="s3">= </span><span class="s1">df</span><span class="s4">[</span><span class="s5">'Lyric'</span><span class="s4">]</span>
+<hr class="ls0"><span class="s0">#%% md 
+</span>
+<span class="s1">## Exploring Lyrics Column 
+ <hr class="ls0"></span><span class="s0">#%% md 
+</span>
+<span class="s1">#### How is the song length distributed 
+ <hr class="ls0"></span><span class="s0">#%% 
+</span>
+<span class="s1">lc</span><span class="s4">.</span><span class="s1">str</span><span class="s4">.</span><span class="s1">len</span><span class="s4">().</span><span class="s1">describe</span><span class="s4">()</span>
+<hr class="ls0"><span class="s0">#%% md 
+</span>
+<span class="s1">#### Maximum song length in the 99th quantile 
+ <hr class="ls0"></span><span class="s0">#%% 
+</span>
+<span class="s1">lc</span><span class="s4">.</span><span class="s1">str</span><span class="s4">.</span><span class="s1">len</span><span class="s4">().</span><span class="s1">quantile</span><span class="s4">(</span><span class="s6">0.99</span><span class="s4">)</span>
+<hr class="ls0"><span class="s0">#%% md 
+</span>
+<span class="s1">#### Plotting the 95th quantile 
+ <hr class="ls0"></span><span class="s0">#%% 
+</span>
+<span class="s1">lc</span><span class="s4">[</span><span class="s1">lc</span><span class="s4">.</span><span class="s1">str</span><span class="s4">.</span><span class="s1">len</span><span class="s4">() </span><span class="s3">&lt; </span><span class="s6">2695</span><span class="s4">].</span><span class="s1">str</span><span class="s4">.</span><span class="s1">len</span><span class="s4">().</span><span class="s1">hist</span><span class="s4">(</span><span class="s1">figsize</span><span class="s3">=</span><span class="s4">(</span><span class="s6">20</span><span class="s4">,</span><span class="s6">5</span><span class="s4">), </span><span class="s1">bins</span><span class="s3">=</span><span class="s6">200</span><span class="s4">)</span>
+<hr class="ls0"><span class="s0">#%% 
+</span>
+<span class="s1">df_cleaned </span><span class="s3">= </span><span class="s1">df</span><span class="s4">[(</span><span class="s1">lc</span><span class="s4">.</span><span class="s1">str</span><span class="s4">.</span><span class="s1">len</span><span class="s4">() </span><span class="s3">&gt; </span><span class="s6">30</span><span class="s4">) </span><span class="s3">&amp; </span><span class="s4">(</span><span class="s1">lc</span><span class="s4">.</span><span class="s1">str</span><span class="s4">.</span><span class="s1">len</span><span class="s4">() </span><span class="s3">&lt; </span><span class="s6">2695</span><span class="s4">)]</span>
+<hr class="ls0"><span class="s0">#%% md 
+</span>
+<span class="s1">#### Duplicated values 
+ <hr class="ls0"></span><span class="s0">#%% 
+</span>
+<span class="s1">df_cleaned </span><span class="s3">= </span><span class="s1">df_cleaned</span><span class="s4">.</span><span class="s1">drop_duplicates</span><span class="s4">(</span><span class="s1">subset</span><span class="s3">=</span><span class="s5">'Lyric'</span><span class="s4">)</span>
+<hr class="ls0"><span class="s0">#%% md 
+</span>
+<span class="s1">#### Removing songs with chords, i.e '------' 
+ <hr class="ls0"></span><span class="s0">#%% 
+</span>
+<span class="s1">df_cleaned </span><span class="s3">= </span><span class="s1">df_cleaned</span><span class="s4">[</span><span class="s3">~</span><span class="s1">lc</span><span class="s4">.</span><span class="s1">str</span><span class="s4">.</span><span class="s1">contains</span><span class="s4">(</span><span class="s5">'------'</span><span class="s4">)]</span>
+<hr class="ls0"><span class="s0">#%% 
+</span>
+<span class="s1">df_cleaned</span>
+<hr class="ls0"><span class="s0">#%% 
+</span>
+<span class="s1">cols </span><span class="s3">= </span><span class="s4">[</span><span class="s5">'Lyric'</span><span class="s4">, </span><span class="s5">'SName'</span><span class="s4">, </span><span class="s5">'artist'</span><span class="s4">]</span>
+<span class="s1">df_cleaned</span><span class="s4">[</span><span class="s1">cols</span><span class="s4">].</span><span class="s1">to_csv</span><span class="s4">(</span><span class="s5">'lyrics_artist_sname.csv'</span><span class="s4">, </span><span class="s1">index</span><span class="s3">=</span><span class="s2">False</span><span class="s4">)</span>
+</pre>
+</body>
+</html>
